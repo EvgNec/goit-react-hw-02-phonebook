@@ -39,8 +39,8 @@ export const Input = styled.input`
 
 export const AddButton = styled.button`
   display: block;
-  width: 100%;
-  height: 30px;
+  width: 40%;
+  height: 40px;
   cursor: pointer;
   margin-top: 15px;
   color: rgb(255, 255, 255);

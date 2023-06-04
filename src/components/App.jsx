@@ -65,7 +65,7 @@ export class App extends Component {
     return (
       <WrapperContent>
         <ContactForm creatContact={this.creatContact} />
-                <Filter
+        <Filter
           value={this.state.filter}
           onChange={this.hadleFilterChange}
         ></Filter>
@@ -73,7 +73,6 @@ export class App extends Component {
           deleteContact={this.deleteContact}
           contacts={this.getFiltredContacts()}
         ></Contacts>
-
       </WrapperContent>
     );
   }
