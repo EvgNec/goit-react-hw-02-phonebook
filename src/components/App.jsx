@@ -1,5 +1,5 @@
 import React from 'react';
-import { nanoid } from 'nanoid'
+// import { nanoid } from 'nanoid'
 // import Section from './Section';
 // import Statistics from './Statistics';
 // import FeedbackOptions from './FeedbackOptions';
