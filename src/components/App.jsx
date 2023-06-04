@@ -32,13 +32,13 @@ export class App extends Component {
         existingContact => existingContact.name === contact.name
       )
     ) {
-      Notiflix.Notify.failure(`${contact.name} is already in your contacts`);
+      Notiflix.Notify.failure(`Contact ${contact.name} is already`);
     } else {
       this.setState(prevState => ({
         contacts: [contact, ...prevState.contacts],
       }));
       Notiflix.Notify.success(
-        `${contact.name} has been successfully added to  your phonebook`
+        `Contact ${contact.name} added to  your phonebook`
       );
     }
   };
