@@ -1,52 +1,80 @@
-import React from 'react';
-// import { nanoid } from 'nanoid'
-// import Section from './Section';
-// import Statistics from './Statistics';
-// import FeedbackOptions from './FeedbackOptions';
-// import Notification from './Notification/Notification';
+import { Component } from 'react';
+import ContactForm from './ContactForm/ContactForm';
+import Contacts from './Contacts/Contacts';
+import Filter from './Filter/Filter';
+import { WrapperContent } from './App.styled';
+import { nanoid } from 'nanoid';
+import Notiflix from 'notiflix';
 
-export class App extends React.Component {
-state = {
-  contacts: [
-    {id: 'id-1', name: 'Rosie Simpson', number: '459-12-56'},
-    {id: 'id-2', name: 'Hermione Kline', number: '443-89-12'},
-    {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
-    {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
-  ],
-  filter: '',
-  name: '',
-  number: ''
-}
-  // this.state.id = nanoid();
+export class App extends Component {
+  state = {
+    contacts: [
+      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+    ],
+    name: '',
+    number: '',
+    filter: '',
+  };
+
+  creatContact = data => {
+    const { name, number } = data;
+    const contact = {
+      name: name,
+      number: number,
+      id: nanoid(),
+    };
+
+    if (
+      this.state.contacts.find(
+        existingContact => existingContact.name === contact.name
+      )
+    ) {
+      Notiflix.Notify.failure(`${contact.name} is already in your contacts`);
+    } else {
+      this.setState(prevState => ({
+        contacts: [contact, ...prevState.contacts],
+      }));
+      Notiflix.Notify.success(
+        `${contact.name} has been successfully added to  your phonebook`
+      );
+    }
+  };
+
+  deleteContact = contactId => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== contactId),
+    }));
+  };
+
+  getFiltredContacts = () => {
+    const { contacts, filter } = this.state;
+
+    const filtredContacts = contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filter.toLowerCase())
+    );
+    return filtredContacts;
+  };
+  hadleFilterChange = e => {
+    this.setState({ filter: e.target.value });
+  };
 
   render() {
-   
     return (
-      <>
-        <h1>Phonebook</h1>
-        <form>
-     <input
-  type="text"
-  name="name"
-  pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-  title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-            required />
-               <input
-  type="tel"
-  name="phone"
-  pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-  title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-            required />
-           <button type="submit">Add contacts</button>
-        </form>
-<h2>Contacts</h2>
-<input
-  type="text"
-  name="findName"
-  pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-  title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-            required />
-      </>
+      <WrapperContent>
+        <ContactForm creatContact={this.creatContact} />
+                <Filter
+          value={this.state.filter}
+          onChange={this.hadleFilterChange}
+        ></Filter>
+        <Contacts
+          deleteContact={this.deleteContact}
+          contacts={this.getFiltredContacts()}
+        ></Contacts>
+
+      </WrapperContent>
     );
   }
 }
