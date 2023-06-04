@@ -1,59 +1,40 @@
 import React from 'react';
-import Section from './Section';
-import Statistics from './Statistics';
-import FeedbackOptions from './FeedbackOptions';
-import Notification from './Notification/Notification';
+import { nanoid } from 'nanoid'
+// import Section from './Section';
+// import Statistics from './Statistics';
+// import FeedbackOptions from './FeedbackOptions';
+// import Notification from './Notification/Notification';
 
 export class App extends React.Component {
   state = {
-    good: 0,
-    neutral: 0,
-    bad: 0,
-  };
-
-  handleLeavFeedback = button => {
-    this.setState( prevState => ({
-      [button]: prevState[button] + 1,
-    }));
-  }
-
-  countTotalFeedback() {
-    const values = Object.values(this.state);
-    const totalFeedback = values.reduce((total, value) => (total += value), 0);
-    return totalFeedback;
-  }
-
-  countPositiveFeedbackPercentage = total => {
-    const percetnage = Math.round((this.state.good * 100) / total);
-
-    return percetnage;
-  };
+  contacts: [],
+    name: '',
+  id: '',
+}
+  // this.state.id = nanoid();
 
   render() {
-    const { good, neutral, bad } = this.state;
-    const options = ['good', 'neutral', 'bad'];
-    const total = this.countTotalFeedback();
+   
     return (
       <>
-        <Section title="Please leave feedback">
-          <FeedbackOptions
-            options={options}
-            onLeaveFeedback={this.handleLeavFeedback}
-          />
-        </Section>
-        <Section title="Statistics">
-                    {total > 0 ? (
-            <Statistics
-              good={good}
-              neutral={neutral}
-              bad={bad}
-              total={total}
-              positivePercentage={this.countPositiveFeedbackPercentage(total)}
-            />
-          ) : (
-            <Notification message="There is no feedback" />
-          )}
-        </Section>
+        <h1>Phonebook</h1>
+        <form>
+     <input
+  type="text"
+  name="name"
+  pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+  title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+            required />
+               <input
+  type="tel"
+  name="phone"
+  pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+  title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+            required />
+           <button type="submit"></button>
+        </form>
+
+
       </>
     );
   }
